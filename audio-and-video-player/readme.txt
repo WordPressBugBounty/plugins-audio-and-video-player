@@ -3,7 +3,7 @@ Contributors: codepeople
 Donate link: https://cpmediaplayer.dwbooster.com
 Tags: html5,video player,audio player,music player,mp4,m4a,m4v,mp3,ogg,webm,captions,subtitles,websrt,iphone,ipad,android,paypal,media,skin,commerce,ecommerce,image,images,admin,Post,posts,page,shortcode,plugin,Google,youtube
 Requires at least: 3.0.5
-Tested up to: 6.6
+Tested up to: 6.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
