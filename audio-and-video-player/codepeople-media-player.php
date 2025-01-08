@@ -4,7 +4,7 @@ Plugin Name: CP Media Player - Audio Player and Video Player
 Plugin URI: https://cpmediaplayer.dwbooster.com
 Description: CP Media Player - Audio Player and Video Player allows you to post multimedia files on your website or blog in a simple way while providing compatibility with all major browsers such as IE, Firefox, Opera, Safari, Chrome and mobile devices: iPhone, iPad, Android.
 Author: CodePeople
-Version: 1.2.4
+Version: 1.2.5
 Text Domain: codepeople-media-player
 Author URI: https://cpmediaplayer.dwbooster.com
 License: GPLv2 or later
@@ -22,7 +22,7 @@ $codepeople_promote_banner_plugins['codepeople-media-player'] = array(
 );
 
 add_action( 'init', function(){
-	add_filter( 'get_post_metadata', function( $v, $object_id, $meta_key, $single, $meta_type ){
+	add_filter( 'get_post_metadata', function( $v, $object_id, $meta_key, $single, $meta_type = '' ){
 		if ( '_elementor_element_cache' == $meta_key ) {
 			global $wpdb;
 			if ( $wpdb->get_var( $wpdb->prepare('SELECT COUNT(*) FROM ' . $wpdb->postmeta . ' WHERE post_id=%d AND meta_key="_elementor_element_cache" AND meta_value LIKE "%ms_avp%";', $object_id ) ) ) return false;
@@ -31,7 +31,7 @@ add_action( 'init', function(){
 	}, 10, 5 );
 } );
 
-define( 'CPMP_VERSION', '1.2.4' );
+define( 'CPMP_VERSION', '1.2.5' );
 define( 'CPMP_LANG', 'codepeople-media-player' );
 define( 'CPMP_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) );
 define( 'CPMP_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) );
