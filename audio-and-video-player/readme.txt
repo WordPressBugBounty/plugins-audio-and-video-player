@@ -4,7 +4,7 @@ Donate link: https://cpmediaplayer.dwbooster.com
 Tags: video player,audio player,music player,mp4,m4a,m4v,mp3,ogg,webm
 Requires at least: 3.0.5
 Tested up to: 6.7
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,10 @@ A: The video formats supported by browsers are available on the following link:
 6. Inserting a New Audio or Video Player
 
 == Changelog ==
+
+= 1.2.6 =
+
+* Improves the plugin interface.
 
 = 1.2.5 =
 

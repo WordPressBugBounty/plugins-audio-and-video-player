@@ -4,7 +4,7 @@ Plugin Name: CP Media Player - Audio Player and Video Player
 Plugin URI: https://cpmediaplayer.dwbooster.com
 Description: CP Media Player - Audio Player and Video Player allows you to post multimedia files on your website or blog in a simple way while providing compatibility with all major browsers such as IE, Firefox, Opera, Safari, Chrome and mobile devices: iPhone, iPad, Android.
 Author: CodePeople
-Version: 1.2.5
+Version: 1.2.6
 Text Domain: codepeople-media-player
 Author URI: https://cpmediaplayer.dwbooster.com
 License: GPLv2 or later
@@ -31,7 +31,7 @@ add_action( 'init', function(){
 	}, 10, 5 );
 } );
 
-define( 'CPMP_VERSION', '1.2.5' );
+define( 'CPMP_VERSION', '1.2.6' );
 define( 'CPMP_LANG', 'codepeople-media-player' );
 define( 'CPMP_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) );
 define( 'CPMP_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) );
@@ -74,7 +74,7 @@ if ( ! function_exists( 'cpmp_admin_menu' ) ) {
 
 		// Add to admin_menu
 		add_options_page( __( 'Audio And Video Player', 'codepeople-media-player' ), __( 'Audio And Video Player', 'codepeople-media-player' ), 'edit_posts', basename( __FILE__ ), array( &$cpmp_obj, 'admin_page' ) );
-		add_menu_page( __( 'Audio And Video Player', 'codepeople-media-player' ), __( 'Audio And Video Player', 'codepeople-media-player' ), 'edit_pages', basename( __FILE__ ) . '_settings_page', array( &$cpmp_obj, 'admin_page' ) );
+		add_menu_page( __( 'Audio And Video Player', 'codepeople-media-player' ), __( 'Audio And Video Player', 'codepeople-media-player' ), 'edit_pages', basename( __FILE__ ) . '_settings_page', array( &$cpmp_obj, 'admin_page' ), 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMS40MDg2IDkuMzUyNThDMjMuNTMwNSAxMC41MDY1IDIzLjUzMDUgMTMuNDkzNSAyMS40MDg2IDE0LjY0NzRMOC41OTY2MiAyMS42MTQ1QzYuNTM0MzUgMjIuNzM2IDQgMjEuMjc2MyA0IDE4Ljk2NzFMNCA1LjAzMjlDNCAyLjcyMzY4IDYuNTM0MzUgMS4yNjQwMiA4LjU5NjYxIDIuMzg1NDhMMjEuNDA4NiA5LjM1MjU4WiIgZmlsbD0iIzFDMjc0QyIvPg0KPC9zdmc+' );
 	}
 }
 
