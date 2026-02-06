@@ -3,8 +3,8 @@ Contributors: codepeople
 Donate link: https://cpmediaplayer.dwbooster.com
 Tags: video player,audio player,music player,mp4,m4a,m4v,mp3,ogg,webm
 Requires at least: 3.0.5
-Tested up to: 6.7
-Stable tag: 1.2.6
+Tested up to: 6.9
+Stable tag: 1.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -161,6 +161,11 @@ A: The video formats supported by browsers are available on the following link:
 
 == Changelog ==
 
+= 1.2.8 =
+= 1.2.7 =
+
+* Updates the module that filters media resources during dynamic playlist generation to prevent audio and video files from being merged when the player is configured for audio-only or video-only playback.
+
 = 1.2.6 =
 
 * Improves the plugin interface.
@@ -191,20 +196,3 @@ A: The video formats supported by browsers are available on the following link:
 
 * Improves the plugin security. Thanks to the security researcher Steven Julian, and Patchstack team.
 * Fixes an issue in the download files link.
-
-= 1.1.3 =
-
-* Removes deprecated jQuery methods.
-* Modifies the integration with payment gateways (Professional version).
-
-= 1.1.2 =
-
-* Fixes an issue with controls covering caption.
-
-= 1.1.1 =
-
-* Implements some minor changes in the iframe mode.
-
-= 1.1.0 =
-
-* Implements the iframe attribute in the players' shortcode to isolate them and prevent conflicts with third-party plugins.
