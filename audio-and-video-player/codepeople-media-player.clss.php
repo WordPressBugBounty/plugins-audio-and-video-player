@@ -903,9 +903,9 @@ class CodePeopleMediaPlayer {
 	// Button in the post edition for media player insertion
 	public function insert_player_button() {
 		print '
-			<a href="javascript:cpmp.new_player_window(\'audio\');" title="' . esc_attr( __( 'New Audio Player', 'codepeople-media-player' ) ) . '"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_audio.png' ) . '" alt="' . esc_attr( __( 'New Audio Player', 'codepeople-media-player' ) ) . '" /></a>
-			<a href="javascript:cpmp.new_player_window(\'video\');" title="' . esc_attr( __( 'New Video Player', 'codepeople-media-player' ) ) . '"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_video.png' ) . '" alt="' . esc_attr( __( 'New Video Player', 'codepeople-media-player' ) ) . '" /></a>
-			<a href="javascript:cpmp.open_insertion_window();" title="' . esc_attr( __( 'Insert Player From Gallery', 'codepeople-media-player' ) ) . '"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_gallery.png' ) . '" alt="' . esc_attr( __( 'Insert Player From Gallery', 'codepeople-media-player' ) ) . '" /></a>
+			<a href="javascript:cpmp.new_player_window(\'audio\');" title="' . esc_attr( __( 'New Audio Player', 'codepeople-media-player' ) ) . '" style="display:inline-block;margin-left:4px;margin-right:4px;padding:0;"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_audio.svg' ) . '" alt="' . esc_attr( __( 'New Audio Player', 'codepeople-media-player' ) ) . '" style="margin:0;height:22px;padding:0;" /></a>
+			<a href="javascript:cpmp.new_player_window(\'video\');" title="' . esc_attr( __( 'New Video Player', 'codepeople-media-player' ) ) . '" style="display:inline-block;margin-left:4px;margin-right:4px;padding:0;"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_video.svg' ) . '" alt="' . esc_attr( __( 'New Video Player', 'codepeople-media-player' ) ) . '" style="margin:0;height:22px;padding:0;" /></a>
+			<a href="javascript:cpmp.open_insertion_window();" title="' . esc_attr( __( 'Insert Player From Gallery', 'codepeople-media-player' ) ) . '" style="display:inline-block;margin-left:4px;margin-right:4px;padding:0;"><img src="' . esc_url( CPMP_PLUGIN_URL . '/images/cpmp_gallery.svg' ) . '" alt="' . esc_attr( __( 'Insert Player From Gallery', 'codepeople-media-player' ) ) . '" style="margin:0;height:22px;padding:0;" /></a>
 		';
 	}//end insert_player_button()
 
@@ -935,14 +935,14 @@ class CodePeopleMediaPlayer {
 			foreach ( $players as $player ) {
 				$options .= '<option value="' . esc_attr( $player->id ) . '">' . wp_unslash( $player->player_name ) . '</option>';
 			}
-			$tag   = '<select aria-label="' . esc_attr( __( 'Player', 'codepeople-media-player' ) ) . '" id="cpmp_media_player">' . $options . '</select>';
-			$label = __( 'Select the player to insert:', 'codepeople-media-player' );
+			$tag   = '<select aria-label="' . esc_attr( __( 'Player', 'codepeople-media-player' ) ) . '" id="cpmp_media_player" style="width:100%;max-width:100%;min-width:0;">' . $options . '</select>';
+			$label = __( 'Select the player to insert', 'codepeople-media-player' );
 		} else {
 			$tag = __( 'You must to define a media player before use it on page/post.', 'codepeople-media-player' );
 		}
 
 		// Skins
-		$skins    = '<select aria-label="' . esc_attr( __( 'Skin', 'codepeople-media-player' ) ) . '" id="cpmp_skins">';
+		$skins    = '<select aria-label="' . esc_attr( __( 'Skin', 'codepeople-media-player' ) ) . '" id="cpmp_skins" style="min-width:0;max-width:100%;flex-grow:1;">';
 		$skin_dir = CPMP_PLUGIN_DIR . '/skins';
 		if ( file_exists( $skin_dir ) ) {
 			$d = dir( $skin_dir );
@@ -963,7 +963,7 @@ class CodePeopleMediaPlayer {
 			'cpmp-admin',
 			'cpmp_insert_media_player',
 			array(
-				'title'     => __( 'Insert media player on your post/page', 'codepeople-media-player' ),
+				'title'     => __( 'Insert media player', 'codepeople-media-player' ),
 				'label'     => $label,
 				'new_label' => __( 'Create or Edit a Player', 'codepeople-media-player' ),
 				'tag'       => $tag,

@@ -336,19 +336,24 @@ var cpmp = function($){
 	function new_player_window( type )
 	{
 		var c = $(
-				'<div title="New Player"><div style="padding:20px;">'+
-				'<label for="cpmp_media_player">Select the skin</label>'+
-				'<div id="cpm_controls_container" style="white-space:nowrap;">'+cpmp_insert_media_player.skins+'&nbsp;&nbsp;</div>'+
-				'</div></div>'
+				'<div title="New Player">'+
+					'<div style="padding:10px;">'+
+						'<label for="cpmp_media_player">Select the skin</label>'+
+						'<div id="cpm_controls_container" style="margin-top:10px;">'+
+							'<div class="cpm_skin_row" style="display:flex;gap:5px;align-items:center;">'+cpmp_insert_media_player.skins+'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'
 			),
-			b = $('<button onclick="">Select '+type+' files</button>'),
+			b = $('<button onclick="" class="button-secondary">Select '+type+' files</button>'),
 			d = $(
 				'<p>- or - Enter a subdir of "Uploads"</p>'+
-				'<p><input type="text" id="cpm_dir" />&nbsp;&nbsp;<input type="button" value="Insert" id="cpm_insert_player" /></p>'
+				'<div class="cpm_dir_row" style="display:flex;gap:5px;align-items:center;">'+
+					'<input type="text" id="cpm_dir" style="flex-grow:1;" /><input type="button" value="Insert" id="cpm_insert_player" class="button-primary" />'+
+				'</div>'
 			),
 			o;
-
-		b.appendTo(c.find('#cpm_controls_container'))
+		b.appendTo(c.find('.cpm_skin_row'))
 		 .on('click', function(){
 			var media = wp.media(
 				{
@@ -419,8 +424,8 @@ var cpmp = function($){
 
 	function open_insertion_window()
 	{
-		var c = $(' <div title="'+cpmp_insert_media_player.title+'"><div style="padding:20px;"><label for="cpmp_media_player">'+
-					cpmp_insert_media_player.label+'<br />'+cpmp_insert_media_player.tag+'<br />'+
+		var c = $(' <div title="'+cpmp_insert_media_player.title+'"><div style="padding:10px;"><label for="cpmp_media_player">'+
+					cpmp_insert_media_player.label+'</label><div style="margin:10px 0;">'+cpmp_insert_media_player.tag+'</div>'+
 					'<a href="options-general.php?page=codepeople-media-player.php">'+cpmp_insert_media_player.new_label+'</a>'+
 					'</div></div>'
 				);
@@ -430,7 +435,7 @@ var cpmp = function($){
             modal: true,
             closeOnEscape: true,
             buttons: [
-                {text: 'OK', click: function() {
+                {text: 'OK', class: "button-primary", click: function() {
 					var p = $('#cpmp_media_player');
 					if(p.length){
 						var v = p[0].options[p[0].selectedIndex].value;
