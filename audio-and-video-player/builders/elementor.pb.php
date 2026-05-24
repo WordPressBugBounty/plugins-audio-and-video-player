@@ -97,6 +97,10 @@ class Elementor_AVP_AUDIO_Widget extends Widget_Base {
 		$this->end_controls_section();
 	} // End register_controls
 
+	public function has_widget_inner_wrapper(): bool {
+		return false;
+	}
+
 	private function _get_shortcode() {
 		$settings = $this->get_settings_for_display();
 		$shortcode = sanitize_text_field( $settings['cpm_audio_player_shortcode'] );
@@ -109,13 +113,7 @@ class Elementor_AVP_AUDIO_Widget extends Widget_Base {
 
 	protected function render() {
 		$shortcode = $this->_get_shortcode();
-		if (
-			isset( $_REQUEST['action'] ) &&
-			(
-				'elementor' == $_REQUEST['action'] ||
-				'elementor_ajax' == $_REQUEST['action']
-			)
-		) {
+		if( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
 			$url  = get_home_url( get_current_blog_id(), '', is_ssl() ? 'https' : 'http' );
 			$url .= ( ( strpos( $url, '?' ) === false ) ? '?' : '&' ) . 'cpmp-avp-preview=' . urlencode( $shortcode );
 			?>
@@ -227,6 +225,10 @@ class Elementor_AVP_VIDEO_Widget extends Widget_Base {
 		$this->end_controls_section();
 	} // End register_controls
 
+	public function has_widget_inner_wrapper(): bool {
+		return false;
+	}
+
 	private function _get_shortcode() {
 		 $settings = $this->get_settings_for_display();
 		$shortcode = sanitize_text_field( $settings['cpm_video_player_shortcode'] );
@@ -239,13 +241,7 @@ class Elementor_AVP_VIDEO_Widget extends Widget_Base {
 
 	protected function render() {
 		$shortcode = $this->_get_shortcode();
-		if (
-			isset( $_REQUEST['action'] ) &&
-			(
-				'elementor' == $_REQUEST['action'] ||
-				'elementor_ajax' == $_REQUEST['action']
-			)
-		) {
+		if( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
 			$url  = get_home_url( get_current_blog_id(), '', is_ssl() ? 'https' : 'http' );
 			$url .= ( ( strpos( $url, '?' ) === false ) ? '?' : '&' ) . 'cpmp-avp-preview=' . urlencode( $shortcode );
 			?>
@@ -326,6 +322,10 @@ class Elementor_AVP_GALLERY_Widget extends Widget_Base {
 		$this->end_controls_section();
 	} // End register_controls
 
+	public function has_widget_inner_wrapper(): bool {
+		return false;
+	}
+
 	private function _get_shortcode() {
 		 $shortcode = '';
 		$settings   = $this->get_settings_for_display();
@@ -338,13 +338,7 @@ class Elementor_AVP_GALLERY_Widget extends Widget_Base {
 
 	protected function render() {
 		$shortcode = $this->_get_shortcode();
-		if (
-			isset( $_REQUEST['action'] ) &&
-			(
-				'elementor' == $_REQUEST['action'] ||
-				'elementor_ajax' == $_REQUEST['action']
-			)
-		) {
+		if( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
 			$url  = get_home_url( get_current_blog_id(), '', is_ssl() ? 'https' : 'http' );
 			$url .= ( ( strpos( $url, '?' ) === false ) ? '?' : '&' ) . 'cpmp-avp-preview=' . urlencode( $shortcode );
 			?>
