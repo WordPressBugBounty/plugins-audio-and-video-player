@@ -1065,6 +1065,14 @@ class CodePeopleMediaPlayer {
 
 		extract( $atts ); // phpcs:ignore WordPress.PHP.DontExtract
 
+		// Sanitize_attrs
+		$file 		= sanitize_text_field( $file );
+		$poster 	= sanitize_text_field( $poster );
+		$lang 		= sanitize_text_field( $lang );
+		$name 		= wp_kses_post( $name );
+		$subtitle 	= wp_kses_post( $subtitle );
+		$link 		= wp_kses_post( $link );
+
 		if ( ! empty( $file ) ) {
 			if ( ! empty( $content ) ) {
 				$name = $content;
@@ -1123,7 +1131,7 @@ class CodePeopleMediaPlayer {
 						try {
 							$metadata                        = wp_read_audio_metadata( $file );
 							$obj                             = new stdClass();
-							$obj->annotation                 = ! empty( $metadata['title'] ) ? $metadata['title'] : pathinfo( $file, PATHINFO_FILENAME );
+							$obj->annotation                 = wp_kses_post( ! empty( $metadata['title'] ) ? $metadata['title'] : pathinfo( $file, PATHINFO_FILENAME ) );
 							$file                            = str_replace( $basedir, $uploads['baseurl'], $file );
 							$obj->files                      = array( $file );
 							$obj->subtitles                  = array();
@@ -1139,6 +1147,20 @@ class CodePeopleMediaPlayer {
 
 	public function replace_shortcode( $atts = array(), $content = '', $shortcode_tag = '' ) {
 		global $wpdb;
+
+		// Sanitize atts and $content
+		if ( is_array( $atts ) ) {
+			$sanitized_atts = [];
+			foreach ( $atts as $key => $val ) {
+				$key = sanitize_key($key);
+				$val = wp_kses_post($val);
+				$sanitized_atts[$key] = $val;
+			}
+			$atts = $sanitized_atts;
+		} elseif ( is_scalar( $atts ) ) {
+			$atts = wp_kses_post( $atts );
+		}
+		$content = wp_kses_post($content);
 		extract( $atts ); // phpcs:ignore WordPress.PHP.DontExtract
 
 		if ( ! empty( $iframe ) && ! $this->in_preview ) {
@@ -1224,9 +1246,12 @@ class CodePeopleMediaPlayer {
 				}
 			}
 		}
-		if ( empty( $type ) ) {
+
+		if ( ! in_array( strtolower($type), ['audio',  'video'] ) ) {
 			$type = 'audio';
 		}
+		$type = strtolower($type);
+
 		if ( ! empty( $this->current_player_playlist ) ) {
 			$first_item = true;
 			foreach ( $this->current_player_playlist as $item ) {
