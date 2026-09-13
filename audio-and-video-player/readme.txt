@@ -1,10 +1,10 @@
 === CP Media Player - Audio Player and Video Player ===
 Contributors: codepeople
 Donate link: https://cpmediaplayer.dwbooster.com
-Tags: video player,audio player,music player,mp4,m4a,m4v,mp3,ogg,webm
+Tags: video player, audio player, music player, mp3, mp4
 Requires at least: 3.0.5
 Tested up to: 7.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,12 @@ A: The video formats supported by browsers are available on the following link:
 6. Inserting a New Audio or Video Player
 
 == Changelog ==
+
+= 1.3.2 =
+
+* Enhances the module responsible for identifying media sources, improving the detection of YouTube videos.
+* Updates the player bar skin.
+* Enhances the players gallery by adding player previews.
 
 = 1.3.1 =
 

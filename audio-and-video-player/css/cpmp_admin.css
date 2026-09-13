@@ -7,3 +7,28 @@
     max-width: 100% !important;
     margin: 0 !important;
 }
+
+#cpmp_media_player_form .playlist_item{
+	display:flex;
+	gap:10px;
+	align-items:center;
+	cursor:pointer;
+	background-color:#c7e4f3;
+	margin:5px;
+	padding:5px;
+}
+#cpmp_media_player_form .playlist_item a {
+	color: black;
+	font-weight: 600;
+	text-decoration:none;
+}
+#cpmp_media_player_form .playlist_item span {
+	flex-grow:1;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.cpmp-popup-youtube{line-height:0;}
+.cpmp-popup-youtube img{border-radius:50%;}
+.mfp-iframe-scaler iframe{background:white !important;}
+.mfp-wrap{z-index: 999999 !important;}

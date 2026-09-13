@@ -57,7 +57,7 @@ var cpmp = function($){
 		e = $(e);
 		$('.skin_selected').removeClass('skin_selected').css('border', '2px solid #FFF');
 		e.addClass('skin_selected').css('border','2px solid #4291D1');
-		$('input[name="cpmp_skin"]').val(skin);
+		$('input[name="cpmp_skin"]').val(skin).trigger('change');
 		if(width){
 			$('#cpmp_width_info').text('Value should be greater than or equal to:'+width);
 			$('#cpmp_height_info').text('Value should be greater than or equal to:'+height);
@@ -181,14 +181,11 @@ var cpmp = function($){
 		if(item_id == ''){ // Insert a new item
 			obj.items.push(item);
 			$('#items_container').append(
-			'<div id="'+item.id+'" class="playlist_item" style="cursor:pointer;width:100%;margin:5px;background-color:#c7e4f3;">'+
-			'<div style="float:left;">'+
+			'<div id="'+item.id+'" class="playlist_item">'+
 			'<a href="javascript:void(0);" onclick="cpmp.move_item(\''+item.id+'\', -1);" title="Up" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></a>'+
 			'<a href="javascript:void(0);" onclick="cpmp.move_item(\''+item.id+'\', 1);" title="Down" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="#010101" d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg></a>'+
 			'<a href="javascript:void(0);" onclick="cpmp.delete_item(\''+item.id+'\');" title="Delete item" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg></a>'+
-			'</div>'+
-			'<div style="float:left;line-height:24px;"><span>'+annotation+'</span></div>'+
-			'<div style="clear:both;"></div>'+
+			'<span>'+annotation+'</span>'+
 			'</div>');
 		}else{ // Edit an existent item
 			for(var i = 0, h = obj.items.length; i < h; i++){
@@ -202,6 +199,7 @@ var cpmp = function($){
 			}
 		}
 		clear_item_form();
+		$(document).trigger('cpmp_playlist_changed');
 	}
 
 	function delete_item(item_id){
@@ -215,6 +213,7 @@ var cpmp = function($){
 			if(obj.items[i].id == item_id){
 				obj.items.splice(i, 1); // Remove item from obj.items
 				$('#'+item_id).remove();// Remove item from playlist
+				$(document).trigger('cpmp_playlist_changed');
 				return;
 			}
 		}
@@ -255,6 +254,7 @@ var cpmp = function($){
 
 				//ordering visual components
 				swap(obj.items[p].id, obj.items[np].id);
+				$(document).trigger('cpmp_playlist_changed');
 
 			}
 		}

@@ -16,9 +16,41 @@ class CodePeopleMediaPlayer {
 		return in_array( $extension, array( 'hls', 'mp4', 'webm', 'ogg', 'youtube', 'vimeo', 'mp3', 'wav' ) );
 	}
 
+	private function is_youtube($url) {
+		if ( empty( $url ) ) {
+			return false;
+		}
+
+		$url_to_parse = $url;
+		if ( ! preg_match( '#^[a-z][a-z0-9+.-]*://#i', $url_to_parse ) ) {
+			$url_to_parse = 'http://' . ltrim( $url_to_parse, '/' );
+		}
+
+		$host = parse_url( $url_to_parse, PHP_URL_HOST );
+		if ( ! $host ) {
+			return false;
+		}
+
+		$host = strtolower( $host );
+
+		$youtube_domains = array(
+			'youtube.com',
+			'youtu.be',
+			'youtube-nocookie.com',
+		);
+
+		foreach ( $youtube_domains as $domain ) {
+			if ( $host === $domain || substr( $host, -strlen( '.' . $domain ) ) === '.' . $domain ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private function get_extension( $file, $type = '' ) {
 		$file = strtolower( $file );
-		if ( stripos( $file, 'youtube' ) !== false ) {
+		if ( $this->is_youtube( $file ) ) {
 			$ext = 'youtube';
 		} elseif ( stripos( $file, 'vimeo' ) !== false ) {
 			$ext = 'vimeo';
@@ -191,6 +223,7 @@ class CodePeopleMediaPlayer {
 	public function admin_page() {
 		global $wpdb;
 		wp_enqueue_media();
+		wp_enqueue_style( 'cpmp-admin', CPMP_PLUGIN_URL . '/css/cpmp_admin.css', array(), CPMP_VERSION );
 		?>
 		<style>.cpm-disabled,.cpm-disabled *{color: #DDDDDD !important;}.cpm-disabled img{opacity: 0.5 !important;}</style>
 		<h1><?php esc_html_e( 'Audio And Video Player', 'codepeople-media-player' ); ?></h1>
@@ -306,6 +339,21 @@ class CodePeopleMediaPlayer {
 				<style>#codepeople-media-playerbuyer_email{min-width:70%;margin-right:5px;}@media (max-width:710px) {.cpm-players-list tbody *{width:100%;clear:both;display:block;max-width:100%;margin:0;text-align:center;}.cpm-players-list tbody tr td:last-child{white-space:normal !important;}.cpm-players-list [type="button"]{margin-bottom:10px;}.cpm-players-list thead tr{display:flex;flex-wrap:wrap;}.cpm-players-list thead th{flex:1;}}</style>
 				<div class="wrap">
 
+					<!-- New Player Section -->
+					<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
+						<?php
+							// create a custom nonce for submit verification later
+							echo '<input type="hidden" name="cpmp_player_creation_nonce" value="' . esc_attr( wp_create_nonce( __FILE__ ) ) . '" />';
+						?>
+						<input type="hidden" name="cpmp_action" value="create" />
+						<div class="postbox">
+							<h2 class="hndle" style="padding:5px;"><?php esc_html_e( 'Create new one', 'codepeople-media-player' ); ?></h2>
+							<div class="inside">
+								<label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Audio', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="audio" checked> <?php esc_html_e( 'Audio', 'codepeople-media-player' ); ?></label> <label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Video', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="video"> <?php esc_html_e( 'Video', 'codepeople-media-player' ); ?></label> <input type="submit" value="Create new media player" class="button-primary" />
+							</div>
+						</div>
+					</form>
+
 					<!-- Players List -->
 					<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
 					<?php
@@ -338,6 +386,7 @@ class CodePeopleMediaPlayer {
 											<td style="white-space:nowrap;min-width:150px;text-align:center;">' . esc_html( $config && isset( $config->type ) ? $config->type : '' ) . '</td>
 											<td style="white-space:nowrap;min-width:250px;text-align:center;">[cpm-player id="' . esc_attr( $player->id ) . '"]</td>
 											<td style="white-space:nowrap;">
+												<a href="' . esc_url( add_query_arg( 'cpmp-avp-preview', '[cpm-player id="' . (int) $player->id . '"]', home_url( '', is_ssl() ? 'https' : 'http' ) ) ) . '" class="cpmp-popup-preview button-secondary">' . esc_html__( 'Preview', 'codepeople-media-player' ) . '</a>
 												<input type="button" value="' . esc_attr( __( 'Edit', 'codepeople-media-player' ) ) . '" class="button-primary" onclick="cpmp.edit_player(' . esc_attr( $player->id ) . ');">
 												<input type="button" value="' . esc_attr__( 'Duplicate', 'codepeople-media-player' ) . '" class="button-secondary" onclick="cpmp.duplicate_player(' . esc_attr( $player->id ) . ');">
 												<input type="button" value="' . esc_attr( __( 'Remove', 'codepeople-media-player' ) ) . '" class="button-secondary" onclick="if(confirm(' . esc_attr( '"' . __( 'Are you sure?', 'codepeople-media-player' ) . '"' ) . ')) cpmp.remove_player(' . esc_attr( $player->id ) . ');">
@@ -356,34 +405,19 @@ class CodePeopleMediaPlayer {
 			wp_enqueue_style( 'cpmp-magnific-popup-css', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), CPMP_VERSION );
 			wp_enqueue_script( 'cpmp-magnific-popup-js', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.min.js', array( 'jquery' ), CPMP_VERSION, true );
 			?>
-					<script>jQuery(function(){jQuery('.cpmp-popup-youtube').magnificPopup({disableOn: 700,type: 'iframe',mainClass: 'mfp-fade',removalDelay: 160,preloader: false,fixedContentPos: false});});</script>
+					<script>jQuery(function(){jQuery('.cpmp-popup-youtube').magnificPopup({disableOn: 700,type: 'iframe',mainClass: 'mfp-fade',removalDelay: 160,preloader: false,fixedContentPos: false, alignTop:false});jQuery('.cpmp-popup-preview').magnificPopup({type: 'iframe',mainClass: 'mfp-fade',removalDelay: 160,fixedContentPos:false,alignTop: false});});</script>
 					<div style="padding:10px; border: 1px solid #DADADA;margin-bottom:20px;text-align:center;">
 						<h2><?php esc_html_e( 'Video Tutorials', 'codepeople-media-player' ); ?></h2>
 						<div style="width:33%;text-align:right;display:inline-block">
-							<a href="https://www.youtube.com/watch?v=YJSkEdkDJM8" class="cpmp-popup-youtube" style="display:inline-block;"><img alt="<?php esc_attr_e( 'Audio player', 'codepeople-media-player' ); ?>" style="width:128px;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-audio.png" /></a>
+							<a href="https://www.youtube.com/watch?v=YJSkEdkDJM8" class="cpmp-popup-youtube" title="<?php esc_attr_e( 'Audio player', 'codepeople-media-player' ); ?>" style="display:inline-block;"><img alt="<?php esc_attr_e( 'Audio player', 'codepeople-media-player' ); ?>" style="width:128px;border-radius:50%;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-audio.png" /></a>
 						</div>
 						<div style="width:33%;text-align:center;display:inline-block">
-							<a href="https://www.youtube.com/watch?v=QG5gGBnVqB0" class="cpmp-popup-youtube" style="display:inline-block;"><img alt="<?php esc_attr_e( 'Video player', 'codepeople-media-player' ); ?>" style="width:128px;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-video.png" /></a>
+							<a href="https://www.youtube.com/watch?v=QG5gGBnVqB0" class="cpmp-popup-youtube" title="<?php esc_attr_e( 'Video player', 'codepeople-media-player' ); ?>" style="display:inline-block;"><img alt="<?php esc_attr_e( 'Video player', 'codepeople-media-player' ); ?>" style="width:128px;border-radius:50%;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-video.png" /></a>
 						</div>
 						<div style="width:33%;text-align:left;display:inline-block">
-							<a href="https://www.youtube.com/watch?v=WS449LCClA8" class="cpmp-popup-youtube" style="display:inline-block;"><img alt="<?php esc_attr_e( 'From gallery', 'codepeople-media-player' ); ?>" style="width:128px;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-gallery.png" /></a>
+							<a href="https://www.youtube.com/watch?v=WS449LCClA8" class="cpmp-popup-youtube" title="<?php esc_attr_e( 'From gallery', 'codepeople-media-player' ); ?>" style="display:inline-block;"><img alt="<?php esc_attr_e( 'From gallery', 'codepeople-media-player' ); ?>" style="width:128px;border-radius:50%;" src="<?php print esc_attr( plugin_dir_url( __FILE__ ) ); ?>images/icon-gallery.png" /></a>
 						</div>
 					</div>
-
-					<!-- New Player Section -->
-					<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
-						<?php
-							// create a custom nonce for submit verification later
-							echo '<input type="hidden" name="cpmp_player_creation_nonce" value="' . esc_attr( wp_create_nonce( __FILE__ ) ) . '" />';
-						?>
-						<input type="hidden" name="cpmp_action" value="create" />
-						<div class="postbox">
-							<h2 class="hndle" style="padding:5px;"><?php esc_html_e( 'Create new one', 'codepeople-media-player' ); ?></h2>
-							<div class="inside">
-								<label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Audio', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="audio" checked> <?php esc_html_e( 'Audio', 'codepeople-media-player' ); ?></label> <label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Video', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="video"> <?php esc_html_e( 'Video', 'codepeople-media-player' ); ?></label> <input type="submit" value="Create new media player" class="button-primary" />
-							</div>
-						</div>
-					</form>
 
 					<p style="border:1px solid #E6DB55;margin-bottom:10px;padding:5px;background-color: #FFFFE0;font-size:18px;">
 					<?php _e( 'The Protection and PayPal settings are available only in the commercial version of <a href="https://cpmediaplayer.dwbooster.com/download" target="_blank">Audio and Video Player</a>.', 'codepeople-media-player' ); // phpcs:ignore WordPress.Security.EscapeOutput
@@ -580,14 +614,11 @@ class CodePeopleMediaPlayer {
 					}
 
 					foreach ( $playlist as $item ) {
-						$playlist_item_list .= '<div id="' . esc_attr( $item->id ) . '" class="playlist_item" style="cursor:pointer;width:100%;margin:5px;background-color:#c7e4f3;">
-						<div style="float:left;">
+						$playlist_item_list .= '<div id="' . esc_attr( $item->id ) . '" class="playlist_item">
 						<a href="javascript:void(0);" onclick="cpmp.move_item(\'' . esc_js( $item->id ) . '\', -1);" title="Up" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></a>
 						<a href="javascript:void(0);" onclick="cpmp.move_item(\'' . esc_js( $item->id ) . '\', 1);" title="Down" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="#010101" d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg></a>
 						<a href="javascript:void(0);" onclick="cpmp.delete_item(\'' . esc_js( $item->id ) . '\');" title="Delete item" style="text-decoration:none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg></a>
-						</div>
-						<div style="float:left;line-height:24px;"><span>' . $item->annotation . '</span></div>
-						<div style="clear:both;"></div>
+						<span>' . $item->annotation . '</span>
 						</div>';
 					}
 
@@ -610,6 +641,12 @@ class CodePeopleMediaPlayer {
 			$height_limit = '';
 			$skin_list    = $this->_get_skin_list( $config->skin, $config->type, $width_limit, $height_limit );
 			$player_type  = ( isset( $config->type ) && 'video' == $config->type ) ? 'video' : 'song';
+
+			wp_enqueue_script( 'cpmp-preview', plugin_dir_url( __FILE__ ) . 'js/cpmp_preview.js', array( 'jquery' ), CPMP_VERSION, true );
+			wp_localize_script( 'cpmp-preview', 'cpmp_preview_data', array(
+				'home_url'         => home_url( '', is_ssl() ? 'https' : 'http' ),
+				'add_item_message' => __( 'Add at least one item to the playlist to see the live preview.', 'codepeople-media-player' ),
+			) );
 			?>
 			<div class="wrap">
 				<form id="cpmp_media_player_form" method="post" action="<?php echo esc_url( isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' ); ?>">
@@ -719,6 +756,16 @@ class CodePeopleMediaPlayer {
 									</tr>
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<!-- Player Preview -->
+					<div class="postbox">
+						<h2 class="hndle" style="padding:5px;"><?php esc_html_e( 'Preview', 'codepeople-media-player' ); ?></h2>
+						<div class="inside">
+							<div id="cpmp-preview-placeholder" style="padding:20px;color:#666;font-style:italic;display:none;">
+								<?php esc_html_e( 'Add at least one item to the playlist to see the live preview.', 'codepeople-media-player' ); ?>
+							</div>
+							<iframe id="cpmp-preview-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin" style="border:0;width:100%;height:200px;"></iframe>
 						</div>
 					</div>
 					<!-- Playlist -->
@@ -1044,6 +1091,7 @@ class CodePeopleMediaPlayer {
 
 					print '<div class="cpmp-preview-container">' . $output . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput
 					print '<script type="text/javascript">jQuery(window).on("load", function(){ var frameEl = window.frameElement; if(frameEl) frameEl.height = jQuery(".cpmp-preview-container").outerHeight(true)+25; });</script>';
+					print '<style>#ms_avp{margin-left:auto;margin-right:auto;}</style>';
 					exit;
 				}
 			}
@@ -1247,7 +1295,7 @@ class CodePeopleMediaPlayer {
 			}
 		}
 
-		if ( ! in_array( strtolower($type), ['audio',  'video'] ) ) {
+		if ( empty($type) || ! in_array( strtolower($type), ['audio',  'video'] ) ) {
 			$type = 'audio';
 		}
 		$type = strtolower($type);
