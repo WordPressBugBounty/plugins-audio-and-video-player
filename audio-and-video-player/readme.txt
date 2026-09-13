@@ -4,7 +4,7 @@ Donate link: https://cpmediaplayer.dwbooster.com
 Tags: video player, audio player, music player, mp3, mp4
 Requires at least: 3.0.5
 Tested up to: 7.1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,10 @@ A: The video formats supported by browsers are available on the following link:
 6. Inserting a New Audio or Video Player
 
 == Changelog ==
+
+= 1.3.3 =
+
+* Fixes an error introduced by the previous plugin update that caused the settings to be hidden when the gallery was empty.
 
 = 1.3.2 =
 

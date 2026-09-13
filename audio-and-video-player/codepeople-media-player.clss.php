@@ -299,6 +299,22 @@ class CodePeopleMediaPlayer {
 			empty( $_POST['cpmp_action'] ) ||
 			in_array( $_POST['cpmp_action'], [ 'remove', 'duplicate' ] )
 	    ) {
+			?>
+			<!-- New Player Section -->
+			<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
+				<?php
+					// create a custom nonce for submit verification later
+					echo '<input type="hidden" name="cpmp_player_creation_nonce" value="' . esc_attr( wp_create_nonce( __FILE__ ) ) . '" />';
+				?>
+				<input type="hidden" name="cpmp_action" value="create" />
+				<div class="postbox">
+					<h2 class="hndle" style="padding:5px;"><?php esc_html_e( 'Create new one', 'codepeople-media-player' ); ?></h2>
+					<div class="inside">
+						<label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Audio', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="audio" checked> <?php esc_html_e( 'Audio', 'codepeople-media-player' ); ?></label> <label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Video', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="video"> <?php esc_html_e( 'Video', 'codepeople-media-player' ); ?></label> <input type="submit" value="Create new media player" class="button-primary" />
+					</div>
+				</div>
+			</form>
+			<?php
 			if ( isset( $_POST['player_id'] ) ) {
 
 				$player_id = isset( $_POST['player_id'] ) && is_numeric( $_POST['player_id'] ) ? intval( $_POST['player_id'] ) : 0;
@@ -338,22 +354,6 @@ class CodePeopleMediaPlayer {
 				?>
 				<style>#codepeople-media-playerbuyer_email{min-width:70%;margin-right:5px;}@media (max-width:710px) {.cpm-players-list tbody *{width:100%;clear:both;display:block;max-width:100%;margin:0;text-align:center;}.cpm-players-list tbody tr td:last-child{white-space:normal !important;}.cpm-players-list [type="button"]{margin-bottom:10px;}.cpm-players-list thead tr{display:flex;flex-wrap:wrap;}.cpm-players-list thead th{flex:1;}}</style>
 				<div class="wrap">
-
-					<!-- New Player Section -->
-					<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
-						<?php
-							// create a custom nonce for submit verification later
-							echo '<input type="hidden" name="cpmp_player_creation_nonce" value="' . esc_attr( wp_create_nonce( __FILE__ ) ) . '" />';
-						?>
-						<input type="hidden" name="cpmp_action" value="create" />
-						<div class="postbox">
-							<h2 class="hndle" style="padding:5px;"><?php esc_html_e( 'Create new one', 'codepeople-media-player' ); ?></h2>
-							<div class="inside">
-								<label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Audio', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="audio" checked> <?php esc_html_e( 'Audio', 'codepeople-media-player' ); ?></label> <label style="margin-right:20px;"><input aria-label="<?php esc_attr_e( 'Video', 'codepeople-media-player' ); ?>" type="radio" name="player_type" value="video"> <?php esc_html_e( 'Video', 'codepeople-media-player' ); ?></label> <input type="submit" value="Create new media player" class="button-primary" />
-							</div>
-						</div>
-					</form>
-
 					<!-- Players List -->
 					<form method="post" action="<?php echo isset( $_SERVER['REQUEST_URI'] ) ? esc_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : ''; ?>">
 					<?php
