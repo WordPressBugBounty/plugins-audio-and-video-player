@@ -4,11 +4,11 @@ Donate link: https://cpmediaplayer.dwbooster.com
 Tags: video player, audio player, music player, mp3, mp4
 Requires at least: 3.0.5
 Tested up to: 7.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-CP Media Player - Audio and Video Player supported by major browsers, such as IE, Firefox, Opera, Safari, Chrome, and mobile devices: iPhone, iPad, Android (tablets and mobiles).
+CP Media Player adds audio and video players with playlists, downloads, subtitles, multiple formats, and support for desktop and mobile browsers.
 
 == Description ==
 
@@ -160,6 +160,10 @@ A: The video formats supported by browsers are available on the following link:
 6. Inserting a New Audio or Video Player
 
 == Changelog ==
+
+= 1.3.4 =
+
+* Enhances plugin security by allowing only users with the Administrator role to access the plugin settings page, and sales reports in the advanced plugin distribution. Special thanks to Animesh Gaurav, Security Researchers for WPScan and Jetpack.
 
 = 1.3.3 =
 

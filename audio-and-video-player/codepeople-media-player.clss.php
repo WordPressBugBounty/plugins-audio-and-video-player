@@ -221,6 +221,7 @@ class CodePeopleMediaPlayer {
 	}
 
 	public function admin_page() {
+		if ( !current_user_can('manage_options') ) return;
 		global $wpdb;
 		wp_enqueue_media();
 		wp_enqueue_style( 'cpmp-admin', CPMP_PLUGIN_URL . '/css/cpmp_admin.css', array(), CPMP_VERSION );
