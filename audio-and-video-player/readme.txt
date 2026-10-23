@@ -163,7 +163,7 @@ A: The video formats supported by browsers are available on the following link:
 
 = 1.3.4 =
 
-* Enhances plugin security by allowing only users with the Administrator role to access the plugin settings page, and sales reports in the advanced plugin distribution. Special thanks to Animesh Gaurav, Security Researchers for WPScan and Jetpack.
+* Enhances plugin security by allowing only users with the Administrator role to access the plugin settings page, and sales reports in the advanced plugin distribution. Special thanks to Ryan Fabella and Animesh Gaurav, Security Researchers for WPScan and Jetpack.
 
 = 1.3.3 =
 
