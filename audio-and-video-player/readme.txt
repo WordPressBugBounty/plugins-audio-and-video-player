@@ -4,7 +4,7 @@ Donate link: https://cpmediaplayer.dwbooster.com
 Tags: video player, audio player, music player, mp3, mp4
 Requires at least: 3.0.5
 Tested up to: 7.1
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,11 @@ A: The video formats supported by browsers are available on the following link:
 6. Inserting a New Audio or Video Player
 
 == Changelog ==
+
+= 1.3.5 =
+
+* Enhances plugin security by sanitizing the subtitle URL and the item annotation of the playlist items. Special thanks to Vũ Đức Hậu, Security Researcher.
+* Adds the subtitle tracks to the player without generating them as HTML markup.
 
 = 1.3.4 =
 

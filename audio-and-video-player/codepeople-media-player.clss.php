@@ -1336,7 +1336,7 @@ class CodePeopleMediaPlayer {
 
 					$item_subtitle_obj          = new stdClass();
 					$item_subtitle_obj->kind    = 'subtitles';
-					$item_subtitle_obj->src     = $location;
+					$item_subtitle_obj->src     = esc_url( $location );
 					$item_subtitle_obj->srclang = $language;
 					$item_subtitles[]           = $item_subtitle_obj;
 				}
@@ -1351,7 +1351,7 @@ class CodePeopleMediaPlayer {
 				$pl_items[] = '<li value="' . esc_attr( json_encode( $pl_item_obj ) ) . '">' .
 				( ! empty( $playlist_download_links ) && ( 'true' == $playlist_download_links || '1' == $playlist_download_links || 1 == $playlist_download_links ) && ! empty( $item_srcs ) ? '<a class="cpmp-playlist-download-link" target="_blank" href="' . esc_url( $item_srcs[0]->src ) . '" title="' . __( 'Download', 'codepeople-media-player' ) . '" download></a>' : '' ) .
 				( ! empty( $item->link ) ? '<a class="cpmp-info" href="' . esc_url( $item->link ) . '">+</a>' : '' ) .
-				( ! empty( $item->annotation ) ? '<span class="cpmp-annotation">' . $item->annotation . '</span>' : '' ) .
+				( ! empty( $item->annotation ) ? '<span class="cpmp-annotation">' . wp_kses_post( $item->annotation ) . '</span>' : '' ) .
 				'</li>';
 
 				$first_item = false;

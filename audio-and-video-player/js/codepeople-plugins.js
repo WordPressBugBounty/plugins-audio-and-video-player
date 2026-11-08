@@ -215,17 +215,18 @@ function codepeople_avp($){
 		},
 
 		parseTrack : function(trck){
-			var track = '<track';
+			var track = document.createElement('track');
 
-			if(typeof src != 'string'){ // The trck is an object
-				track += ' srclang = "' + ((trck.srclang) ? trck.srclang : 'en') + '"';
-				track += ' kind = "'    + ((trck.kind)    ? trck.kind    : 'subtitles') + '"';
-				if(trck.src) track += ' src="' + trck.src + '"';
+			if(typeof trck != 'string' && trck){ // The trck is an object
+				track.setAttribute('srclang', (trck.srclang) ? trck.srclang : 'en');
+				track.setAttribute('kind',    (trck.kind)    ? trck.kind    : 'subtitles');
+				if(trck.src) track.setAttribute('src', trck.src);
 			}else{ // The trck is a string with caption location
-				track += ' kind="subtitles" srclang="en" src="' + trck + '"';
+				track.setAttribute('kind', 'subtitles');
+				track.setAttribute('srclang', 'en');
+				if(trck) track.setAttribute('src', trck);
 			}
 
-			track += ' />';
 			return track;
 		},
 
@@ -243,7 +244,7 @@ function codepeople_avp($){
 		},
 
 		playItem : function(item){
-			var me = this, player = me.player, node = player.node, poster = '', srcTags, trackTags = '';
+			var me = this, player = me.player, node = player.node, poster = '', srcTags, trackTags = [];
 
 			if(typeof item != 'string')
 			{
@@ -263,18 +264,18 @@ function codepeople_avp($){
 				{
 					if(Array.isArray(item.track))
 						// many captions
-						$.each(item.track, function(i, track){ trackTags += me.parseTrack(track); });
+						$.each(item.track, function(i, track){ trackTags.push(me.parseTrack(track)); });
 					else
-						trackTags += me.parseTrack(item.track);
+						trackTags.push(me.parseTrack(item.track));
 				}
 			}
 			else srcTags = item;
 			if(srcTags.length)
 			{
 				$(node).find('track').remove();
-				if(trackTags != '')
+				if(trackTags.length)
 				{
-					$(node).append(trackTags);
+					$.each(trackTags, function(i, t){ $(node).append(t); });
 					player.rebuildtracks();
 				}
 
