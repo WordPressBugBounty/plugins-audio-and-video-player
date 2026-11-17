@@ -466,8 +466,26 @@ function codepeople_avp($){
 		});
 	};
 	$('.codepeople-media').each(function(){
-		var me 		 = $(this),
-			device_player = me.hasClass('device-player-skin'),
+		function _dataSourceToSource( e ) {
+			let data_src = e.attr( 'data-src' );
+			if( data_src ) {
+				e.attr( 'src', data_src );
+				e.removeAttr( 'data-src' );
+			}
+			// If the source is a child <source> element, set its src attribute as well
+			e.find( 'source' ).each(function() {
+				let source = $(this);
+				let src = source.attr( 'data-src' );
+				if( src ) {
+					source.attr( 'src', src );
+					source.removeAttr( 'data-src' );
+				}
+			});
+		};
+		var me = $(this);
+		_dataSourceToSource(me);
+
+		var device_player = me.hasClass('device-player-skin'),
 			settings = {
 				videoVolume: 'horizontal',
 				hideVideoControlsOnLoad: true,
